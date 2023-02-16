@@ -4,6 +4,9 @@ const jwt = require("jsonwebtoken")
 
 //helpers
 const createUserToken = require("../helpers/create-user-token")
+const isAdmin = require("../helpers/isAdmin")
+const getToken = require("../helpers/get-token")
+const getUserByToken = require("../helpers/get-user-by-token")
 
 module.exports = class UserController {
     static async register(req, res) {
@@ -46,9 +49,30 @@ module.exports = class UserController {
         if(!password) return res.status(422).json({message: "A senha é obrigatória"})
 
         //check if user exists
-        const userExist = await User.findOne({ email: email })
+        const user = await User.findOne({ email: email })
 
-        if(!userExist) return res.status(422).json({message: "Não há usuário cadastrado com este e-mail"})
+        if(!user) return res.status(422).json({message: "Não há usuário cadastrado com este e-mail"})
 
+        //check if password match with db password
+        const checkPassword = await bcrypt.compare(password, user.password)
+
+        if(!checkPassword) return res.status(422).json({message: "Senha incorreta"})
+
+        await createUserToken(user, req, res)
+        
+    }
+    static async getAllUsers(req, res, next) {
+        const users = await User.find().sort("-createdAt")
+
+        //check if user exists
+        const token = getToken(req)
+        const user = await getUserByToken(token)
+
+        await isAdmin(user, req, res, next)
+
+        if(user.isAdmin) {
+            res.status(200).json({users: users})
+        }
+        
     }
 }
