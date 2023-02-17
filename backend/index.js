@@ -17,7 +17,9 @@ app.use(express.static("public"))
 
 //Routes
 const UserRoutes = require("./routes/UserRoutes")
+const AdminRoutes = require("./routes/AdminRoutes")
 
 app.use("/users", UserRoutes)
+app.use("/admin", AdminRoutes)
 
 app.listen(5000)
