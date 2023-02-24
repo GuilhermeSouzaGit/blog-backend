@@ -8,5 +8,6 @@ router.post("/register", UserController.register)
 router.post("/login", UserController.login)
 router.patch("/edit/:id", verifyToken, UserController.editUser)
 router.get("/profile", verifyToken, UserController.showUser)
+router.post("/password/reset", verifyToken, UserController.passwordRecovery)
 
 module.exports = router
