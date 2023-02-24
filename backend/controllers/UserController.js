@@ -1,6 +1,6 @@
 const User = require("../models/User")
 const bcrypt = require("bcrypt")
-const jwt = require("jsonwebtoken")
+const nodemailer = require("nodemailer")
 
 //helpers
 const createUserToken = require("../helpers/create-user-token")
@@ -61,20 +61,11 @@ module.exports = class UserController {
         
     }
     static async editUser(req, res) {
-        const id = req.params.id
-
         //check if user exists
         const token = getToken(req)
         const user = await getUserByToken(token)
 
-        const { name, email, phone, password, confirmpassword } = req.body
-
-        //validations
-        if(!name) return res.status(422).json({message: "O nome é obrigatório!"})
-        user.name = name
-
-        if(!email) return res.status(422).json({message: "O e-mail é obrigatório"})
-        user.email = email
+        const { name, email, password, confirmpassword } = req.body
 
         //check if email has already taken
         const userExist = await User.findOne({ email: email })
@@ -114,6 +105,30 @@ module.exports = class UserController {
         res.status(200).json({message: `O nome do usuário é ${user.name} e o e-mail é ${user.email}`})
     }
     static async passwordRecovery(req, res) {
+        const { email } = req.body
+
+        if(!email) return res.status(422).json({message: "O e-mail é obrigatório"})
+        
+        const transport = nodemailer.createTransport({
+            host: "sandbox.smtp.mailtrap.io",
+            port: 2525,
+            auth: {
+              user: process.env.MAIL_USER,
+              pass: process.env.MAIL_PASS
+            }
+        });
+
+        const message = {
+            from: "noreply@blog.com",
+            to: email,
+            subject: "Recuperação de senha",
+            text: "Plaintext version of the message",
+            html: "<p>HTML version of the message</p>"
+        };
+
+        transport.sendMail(message, function (err) {
+            if(!err) return res.status(400).json({message: "Erro ao enviar o e-mail"})
+        })
 
     }
 }
