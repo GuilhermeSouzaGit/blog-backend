@@ -1,5 +1,5 @@
 const mongoose = require("../db/conn")
-const {Schema} = mongoose
+const { Schema } = mongoose
 
 const UserSchema = new Schema({
     name: {
@@ -18,8 +18,8 @@ const UserSchema = new Schema({
         type: Boolean,
         default: false
     },
-},{timestamps: true})
+}, { timestamps: true })
 
-const User = mongoose.model("User",  UserSchema)
+const User = mongoose.model("User", UserSchema)
 
 module.exports = User
