@@ -7,5 +7,7 @@ const isAdmin = require("../helpers/isAdmin")
 
 router.get("/", verifyToken, PostController.getAllPosts)
 router.post("/create", verifyToken, isAdmin, PostController.createPost)
+router.post("/:id/like", verifyToken, PostController.like)
+router.post("/:id/comment", verifyToken, PostController.comment)
 
 module.exports = router
