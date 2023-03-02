@@ -8,7 +8,8 @@ const UserSchema = new Schema({
     },
     email: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     password: {
         type: String,
@@ -18,6 +19,10 @@ const UserSchema = new Schema({
         type: Boolean,
         default: false
     },
+    likedPosts: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Posts"
+    }]
 }, { timestamps: true })
 
 const User = mongoose.model("User", UserSchema)
