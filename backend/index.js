@@ -5,6 +5,8 @@ const app = express()
 
 const conn = require("./db/conn")
 
+const port = process.env.PORT
+
 //config JSON response
 app.use(express.json())
 
@@ -20,4 +22,4 @@ app.use("/users", UserRoutes)
 app.use("/admin", AdminRoutes)
 app.use("/posts", PostRoutes)
 
-app.listen(5000, console.log("Servidor rodando na porta 5000"))
+app.listen(port, console.log(`Server rodando na porta ${port}`))
