@@ -18,10 +18,6 @@ const UserRoutes = require("./routes/UserRoutes")
 const AdminRoutes = require("./routes/AdminRoutes")
 const PostRoutes = require("./routes/PostRoutes")
 
-app.get("/", (req, res) => {
-    res.json("Hello World")
-})
-
 app.use("/users", UserRoutes)
 app.use("/admin", AdminRoutes)
 app.use("/posts", PostRoutes)
