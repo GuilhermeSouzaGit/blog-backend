@@ -1,5 +1,5 @@
 const mongoose = require("../db/conn")
-const {Schema} = mongoose
+const { Schema } = mongoose
 
 const PostSchema = new Schema({
     title: {
@@ -21,17 +21,20 @@ const PostSchema = new Schema({
         },
         postedBy: {
             type: String
+        },
+        userId: {
+            type: String,
         }
     }],
     likesCount: {
-        type: Number, 
-        default: 0 
+        type: Number,
+        default: 0
     },
     likes: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: "User"
     }]
-},{timestamps: true})
+}, { timestamps: true })
 
 const Posts = mongoose.model("Posts", PostSchema)
 
