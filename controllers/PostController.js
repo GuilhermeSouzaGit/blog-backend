@@ -3,6 +3,7 @@ const Posts = require("../models/Posts")
 //helpers
 const getToken = require("../helpers/get-token")
 const getUserByToken = require("../helpers/get-user-by-token")
+const { findById } = require("../models/User")
 
 module.exports = class PostController {
     static async createPost(req, res, next) {
@@ -28,6 +29,16 @@ module.exports = class PostController {
         const posts = await Posts.find().sort("-createdAt")
 
         res.status(200).json({ posts: posts })
+    }
+    static async getUniquePost(req, res) {
+        const postId = req.params
+        const post = await Posts.findById(postId.id)
+
+        try {
+            if (post) return res.status(200).json(post)
+        } catch (error) {
+            console.log(error);
+        }
     }
     static async like(req, res) {
         const token = getToken(req)
