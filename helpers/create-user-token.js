@@ -1,8 +1,12 @@
 require('dotenv').config()
 const jwt = require("jsonwebtoken")
-const cookieParser = require("cookie-parser")
 
 const createUserToken = async (user, req, res) => {
+    const express = require("express")
+    const cookieParser = require("cookie-parser")
+    const app = express()
+    app.use(cookieParser())
+
     const token = jwt.sign({
         name: user.name,
         id: user._id,
@@ -10,8 +14,8 @@ const createUserToken = async (user, req, res) => {
     }, `${process.env.SECRET}`)
 
     //return token
-    res.status(200).json(({ message: "Você está autenticado", token: token, userId: user._id, }))
     res.cookie("auth", token)
+    res.status(200).json(({ message: "Você está autenticado", token: token, userId: user._id, }))
 }
 
 module.exports = createUserToken
