@@ -11,7 +11,7 @@ const port = process.env.PORT
 //config JSON response
 app.use(express.json())
 
-app.use(cors({ credentials: true, origin: "https://blog-frontend-eosin.vercel.app", }))
+app.use(cors({ credentials: true, origin: ["https://blog-frontend-eosin.vercel.app", "http://localhost:3000"] }))
 
 app.use(cookieParser())
 
