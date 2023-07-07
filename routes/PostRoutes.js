@@ -6,6 +6,7 @@ const verifyToken = require("../helpers/verify-token")
 const isAdmin = require("../helpers/isAdmin")
 
 router.get("/", verifyToken, PostController.getAllPosts)
+router.get("/post/:id", verifyToken, PostController.getUniquePost)
 router.post("/create", verifyToken, isAdmin, PostController.createPost)
 router.post("/:id/like", verifyToken, PostController.like)
 router.post("/:id/comment", verifyToken, PostController.comment)
