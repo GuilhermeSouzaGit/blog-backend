@@ -65,14 +65,17 @@ module.exports = class PostController {
 
         const { text } = req.body
         const postedBy = user.name
+        const userId = user._id
 
         const post = await Posts.findById(postId)
 
         if (!text) return res.status(422).json({ message: "Conteúdo do comentário é obrigatório" })
 
         try {
-            post.comments.push({ text, postedBy, user })
+            console.log(userId);
+            post.comments.push({ text, postedBy, userId })
 
+            console.log(post);
             await post.save()
             res.json(post)
         } catch (error) {
