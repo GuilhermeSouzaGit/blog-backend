@@ -8,9 +8,9 @@ module.exports = class PostController {
     static async createPost(req, res, next) {
         const { title, content, author } = req.body
 
-        if(!title) return res.status(422).json({message: "Para criar um post o campo title é obrigatório"})
-        if(!content) return res.status(422).json({message: "Para criar um post o campo content é obrigatório"})
-        if(!author) return res.status(422).json({message: "Para criar um post o campo author é obrigatório"})
+        if (!title) return res.status(422).json({ message: "Para criar um post o campo title é obrigatório" })
+        if (!content) return res.status(422).json({ message: "Para criar um post o campo content é obrigatório" })
+        if (!author) return res.status(422).json({ message: "Para criar um post o campo author é obrigatório" })
 
         try {
             const newPost = await Posts.create({
@@ -19,32 +19,32 @@ module.exports = class PostController {
                 author
             })
 
-            res.status(200).json({message: "Post criado com sucesso!"})
+            res.status(200).json({ message: "Post criado com sucesso!" })
         } catch (error) {
-            res.status(500).json({message: error})
+            res.status(500).json({ message: error })
         }
     }
     static async getAllPosts(req, res) {
         const posts = await Posts.find().sort("-createdAt")
 
-        res.status(200).json({ posts: posts})
+        res.status(200).json({ posts: posts })
     }
     static async like(req, res) {
         const token = getToken(req)
         const user = await getUserByToken(token)
-        
+
         const userId = user._id;
         const postId = req.params.id;
 
         const post = await Posts.findById(postId)
         try {
 
-            if(post.likes.includes(userId)) {
+            if (post.likes.includes(userId)) {
                 post.likes.pull(userId)
                 post.likesCount -= 1;
 
                 user.likedPosts.pull(postId)
-            }else {
+            } else {
                 post.likes.push(userId)
                 post.likesCount += 1;
 
@@ -68,10 +68,10 @@ module.exports = class PostController {
 
         const post = await Posts.findById(postId)
 
-        if(!text) return res.status(422).json({message: "Conteúdo do comentário é obrigatório"})
+        if (!text) return res.status(422).json({ message: "Conteúdo do comentário é obrigatório" })
 
         try {
-            post.comments.push({ text, postedBy})
+            post.comments.push({ text, postedBy, user })
 
             await post.save()
             res.json(post)
