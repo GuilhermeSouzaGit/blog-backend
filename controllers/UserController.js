@@ -10,13 +10,13 @@ const getUserByToken = require("../helpers/get-user-by-token")
 
 module.exports = class UserController {
     static async register(req, res) {
-        const { name, email, password, confirmpassword } = req.body
+        const { name, email, password, confirmPassword } = req.body
 
         //validations
         if (!name) return res.status(422).json({ message: "O nome é obrigatório!" })
         if (!email) return res.status(422).json({ message: "O e-mail é obrigatório!" })
         if (!password) return res.status(422).json({ message: "A senha é obrigatória!" })
-        if (password !== confirmpassword) return res.status(422).json({ message: "As senhas não conferem!" })
+        if (password !== confirmPassword) return res.status(422).json({ message: "As senhas não conferem!" })
 
         //check if user already exist
         const userExist = await User.findOne({ email: email })
@@ -66,16 +66,16 @@ module.exports = class UserController {
         const token = getToken(req)
         const user = await getUserByToken(token)
 
-        const { name, email, password, confirmpassword } = req.body
+        const { name, email, password, confirmPassword } = req.body
 
         //check if email has already taken
         const userExist = await User.findOne({ email: email })
 
         if (user.email !== email && userExist) return res.status(422).json({ message: "Por favor, utilize outro e-mail!" })
 
-        if (password !== confirmpassword) {
+        if (password !== confirmPassword) {
             return res.status(422).json({ message: "As senhas não conferem" })
-        } else if (password === confirmpassword && password != null) {
+        } else if (password === confirmPassword && password != null) {
             //creating a new password
             const salt = await bcrypt.genSalt(12)
             const passwordHash = await bcrypt.hash(password, salt)
