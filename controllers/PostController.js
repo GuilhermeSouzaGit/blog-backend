@@ -1,12 +1,13 @@
 const Posts = require("../models/Posts")
+const cloudinary = require("cloudinary").v2
 
 //helpers
 const getToken = require("../helpers/get-token")
-const getUserByToken = require("../helpers/get-user-by-token")
-const { findById } = require("../models/User")
+const getUserByToken = require("../helpers/get-user-by-token");
 
 module.exports = class PostController {
-    static async createPost(req, res, next) {
+    static async createPost(req, res) {
+        const files = req.files;
         const { title, content, author } = req.body
 
         if (!title) return res.status(422).json({ message: "Para criar um post o campo title é obrigatório" })
@@ -17,8 +18,34 @@ module.exports = class PostController {
             const newPost = await Posts.create({
                 title,
                 content,
-                author
+                author,
             })
+            console.log(newPost, "NEW POST")
+
+            const postId = newPost._id.toString()
+            console.log(postId, "POST ID")
+
+            const imageUrls = [];
+
+            for (const file of Object.values(files)) {
+                const buffer = file.buffer;
+                const uniqueSuffix = Math.round(Math.random() * 1E9);
+                const filename = `${postId}-${uniqueSuffix}`
+
+                await cloudinary.uploader.upload_stream(
+                    { folder: `post-${postId}`, public_id: filename },
+                    (error, result) => {
+                        if (error) {
+                            console.error("Erro ao fazer o upload da imagem:", error);
+                            return res.status(500).json({ message: "Erro ao fazer o upload da imagem" });
+                        }
+                        console.log(result.url);
+                        imageUrls.push(result.url)
+                        newPost.images = imageUrls;
+                        newPost.save()
+                    }
+                ).end(buffer);
+            }
 
             res.status(200).json({ message: "Post criado com sucesso!" })
         } catch (error) {
@@ -91,6 +118,21 @@ module.exports = class PostController {
             res.json(post)
         } catch (error) {
             console.log(error)
+        }
+    }
+    static async getImages(req, res) {
+        const postId = req.params.id;
+
+        try {
+            const post = await Posts.findById(postId)
+
+            if (!post) return res.status(404).json({ message: "Post não encontrado" });
+
+            const imageUrls = post.images;
+
+            res.status(200).json(imageUrls)
+        } catch (error) {
+            res.status(500).json({ message: "Erro ao buscar imagens" })
         }
     }
 }
