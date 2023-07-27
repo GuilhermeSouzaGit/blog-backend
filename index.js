@@ -1,6 +1,6 @@
 const express = require("express")
 const cors = require("cors")
-const cookieParser = require("cookie-parser")
+const cloudinary = require("cloudinary").v2;
 
 const app = express()
 
@@ -8,12 +8,16 @@ const conn = require("./db/conn")
 
 const port = process.env.PORT
 
+cloudinary.config({
+    cloud_name: process.env.CLOUD_NAME,
+    api_key: process.env.API_KEY,
+    api_secret: process.env.API_SECRET,
+    secure: true
+})
 //config JSON response
 app.use(express.json())
 
 app.use(cors({ credentials: true, origin: ["https://blog-frontend-eosin.vercel.app", "http://localhost:3000", "http://192.168.1.10:3000"] }))
-
-app.use(cookieParser())
 
 app.use(express.static("public"))
 
