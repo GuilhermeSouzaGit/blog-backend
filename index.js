@@ -17,7 +17,7 @@ cloudinary.config({
 //config JSON response
 app.use(express.json())
 
-app.use(cors({ credentials: true, origin: ["https://blog-frontend-eosin.vercel.app", "http://localhost:3000", "http://192.168.1.10:3000"] }))
+app.use(cors({ credentials: true, origin: "http://localhost:3000/" }))
 
 app.use(express.static("public"))
 
