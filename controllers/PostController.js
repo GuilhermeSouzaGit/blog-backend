@@ -39,7 +39,7 @@ module.exports = class PostController {
                             console.error("Erro ao fazer o upload da imagem:", error);
                             return res.status(500).json({ message: "Erro ao fazer o upload da imagem" });
                         }
-                        console.log(result.url);
+                        console.log(result.url, "teste");
                         imageUrls.push(result.url)
                         newPost.images = imageUrls;
                     }
