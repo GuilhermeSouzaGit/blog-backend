@@ -25,27 +25,27 @@ module.exports = class PostController {
             const postId = newPost._id.toString()
             console.log(postId, "POST ID")
 
-            const imageUrls = [];
+            // const imageUrls = [];
 
-            for (const file of Object.values(files)) {
-                const buffer = file.buffer;
-                const uniqueSuffix = Math.round(Math.random() * 1E9);
-                const filename = `${postId}-${uniqueSuffix}`
+            // for (const file of Object.values(files)) {
+            //     const buffer = file.buffer;
+            //     const uniqueSuffix = Math.round(Math.random() * 1E9);
+            //     const filename = `${postId}-${uniqueSuffix}`
 
-                await cloudinary.uploader.upload_stream(
-                    { folder: `post-${postId}`, public_id: filename },
-                    (error, result) => {
-                        if (error) {
-                            console.error("Erro ao fazer o upload da imagem:", error);
-                            return res.status(500).json({ message: "Erro ao fazer o upload da imagem" });
-                        }
-                        console.log(result.url);
-                        imageUrls.push(result.url)
-                        newPost.images = imageUrls;
-                        newPost.save()
-                    }
-                ).end(buffer);
-            }
+            //     await cloudinary.uploader.upload_stream(
+            //         { folder: `post-${postId}`, public_id: filename },
+            //         (error, result) => {
+            //             if (error) {
+            //                 console.error("Erro ao fazer o upload da imagem:", error);
+            //                 return res.status(500).json({ message: "Erro ao fazer o upload da imagem" });
+            //             }
+            //             console.log(result.url);
+            //             imageUrls.push(result.url)
+            //             newPost.images = imageUrls;
+            //             newPost.save()
+            //         }
+            //     ).end(buffer);
+            // }
 
             res.status(200).json({ message: "Post criado com sucesso!" })
         } catch (error) {
