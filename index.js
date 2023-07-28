@@ -8,7 +8,7 @@ const conn = require("./db/conn")
 
 const port = process.env.PORT
 
-app.use(cors({ credentials: true, origin: "localhost:3000" }))
+app.use(cors({ credentials: true, origin: "http://localhost:3000" }))
 
 cloudinary.config({
     cloud_name: process.env.CLOUD_NAME,
