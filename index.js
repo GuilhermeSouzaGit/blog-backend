@@ -8,6 +8,8 @@ const conn = require("./db/conn")
 
 const port = process.env.PORT
 
+app.use(cors({ credentials: true, origin: "http://localhost:3000" }))
+
 cloudinary.config({
     cloud_name: process.env.CLOUD_NAME,
     api_key: process.env.API_KEY,
@@ -17,7 +19,6 @@ cloudinary.config({
 //config JSON response
 app.use(express.json())
 
-app.use(cors({ credentials: true, origin: "http://localhost:3000" }))
 
 app.use(express.static("public"))
 
