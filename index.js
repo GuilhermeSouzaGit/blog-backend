@@ -8,7 +8,7 @@ const conn = require("./db/conn")
 
 const port = process.env.PORT
 
-app.use(cors({ credentials: true, origin: ["http://localhost:3000", "https://blog-frontend-eosin.vercel.app/"] }))
+app.use(cors({ credentials: true, origin: ["http://localhost:3000", "https://blog-frontend-eosin.vercel.app"] }))
 
 cloudinary.config({
     cloud_name: process.env.CLOUD_NAME,
