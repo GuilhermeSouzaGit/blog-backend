@@ -45,10 +45,10 @@ module.exports = class PostController {
                             imageUrls.push(result.url)
                             newPost.images = imageUrls;
                         },
-                        newPost.save()
                     ).end(buffer);
                 }
             }
+            newPost.save()
 
             res.status(200).json({ message: "Post criado com sucesso!" })
         } catch (error) {
