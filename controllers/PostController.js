@@ -44,9 +44,9 @@ module.exports = class PostController {
                             console.log(result.url);
                             imageUrls.push(result.url)
                             newPost.images = imageUrls;
-                            newPost.save()
                         }
                     ).end(buffer);
+                    newPost.save()
                 }
             }
 
