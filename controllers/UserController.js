@@ -1,7 +1,7 @@
 const User = require("../models/User")
 const Posts = require("../models/Posts")
 const bcrypt = require("bcrypt")
-const nodemailer = require("nodemailer")
+const sendEmail = require("../helpers/mail-sender")
 
 //helpers
 const createUserToken = require("../helpers/create-user-token")
@@ -35,6 +35,7 @@ module.exports = class UserController {
                 password: passwordHash,
             })
             await createUserToken(newUser, req, res)
+            sendEmail(email);
 
             console.log(newUser)
         } catch (error) {
