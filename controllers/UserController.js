@@ -35,7 +35,7 @@ module.exports = class UserController {
                 password: passwordHash,
             })
             await createUserToken(newUser, req, res)
-            sendEmail(email);
+            await sendEmail(email);
 
             console.log(newUser)
         } catch (error) {
