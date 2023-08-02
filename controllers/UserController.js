@@ -29,13 +29,13 @@ module.exports = class UserController {
 
         //create a user
         try {
-            const newUser = await User.create({
-                name,
-                email,
-                password: passwordHash,
-            })
-            sendEmail(email);
-            await createUserToken(newUser, req, res)
+            // const newUser = await User.create({
+            //     name,
+            //     email,
+            //     password: passwordHash,
+            // })
+            await sendEmail(email);
+            // await createUserToken(newUser, req, res)
 
             console.log(newUser)
         } catch (error) {
