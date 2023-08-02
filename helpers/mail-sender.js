@@ -14,8 +14,6 @@ const transporter = nodemailer.createTransport({
 });
 
 const sendEmail = async (email) => {
-    console.log(email)
-    console.log(typeof email)
     const mailSent = await transporter.sendMail({
         text: "Obrigado por se cadastrar em meu site",
         subject: "Cadastro em um novo site",
