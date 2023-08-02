@@ -15,6 +15,7 @@ const transporter = nodemailer.createTransport({
 
 const sendEmail = async (email) => {
     try {
+        console.log("antes de enviar")
         const mailSent = await transporter.sendMail({
             text: "Obrigado por se cadastrar em meu site",
             subject: "Cadastro em um novo site",
@@ -75,7 +76,7 @@ const sendEmail = async (email) => {
             </html>
             `
         })
-
+        console.log("antes do log de envio")
         console.log(mailSent)
     } catch (error) {
         console.error("Error sending email:", error);
