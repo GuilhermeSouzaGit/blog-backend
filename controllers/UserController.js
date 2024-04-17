@@ -50,7 +50,7 @@ module.exports = class UserController {
         if (!password) return res.status(422).json({ message: "A senha é obrigatória" })
 
         //check if user exists
-        const user = await User.findOne({ email: email }).catch((e) => console.log("erro no findOne"))
+        const user = await User.findOne({ email: email })
 
         if (!user) return res.status(422).json({ message: "Não há usuário cadastrado com este e-mail" })
 
