@@ -5,7 +5,7 @@ const cloudinary = require("cloudinary").v2;
 const app = express()
 
 const conn = require("./db/conn")
-conn()
+conn
 
 const port = process.env.PORT
 
